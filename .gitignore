@@ -1,0 +1,13 @@
+# List out files and directories that you don't want to load to git
+*.ipynb
+*.csv
+*.png
+*.jpg
+*.pyc
+*.log
+*.xlsx
+*.rds
+*.txt
+*.e*
+*.o*
+*.ipynb_checkpoints*

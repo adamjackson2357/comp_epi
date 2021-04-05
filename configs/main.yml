@@ -1,0 +1,7 @@
+---
+
+# Filenames
+proteins_fname: "../data/Proteins_selected_denoised_re.rds"
+meth_fname: "../data/meth_sample.rds"
+meth_tech_fname: "../data/Methylation_technical_confounders.rds"
+covars_fname: "../data/Covariates_no_rep.rds"
