@@ -6,10 +6,12 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 suppressPackageStartupMessages({
   library(pheatmap)
+  library(dplyr)
 })
 
 covars <- readRDS("../data/covars_formatted.rds")
-meth <- readRDS("../data/meth_formatted.rds")
+meth <- readRDS("../data/meth_denoised.rds")
+meth_annot <- readRDS("../data/meth_annot_formatted.rds")
 proteins <- readRDS("../data/proteins_formatted.rds")
 
 # basic descriptive
@@ -59,3 +61,41 @@ points(cumsum(ev), pch = 19, col = "tomato", cex = 0.3)
 legend("top", pch = 19, col = c("navy", "tomato"),
        legend = c("EV", "Cumulative EV"), cex = 0.9, horiz = T)
 dev.off()
+
+
+# CpGS
+
+# meth heatmap
+pheatmap(cor(meth), breaks = seq(-1, 1, length.out = 100),
+         show_rownames = FALSE, show_colnames = FALSE,
+         filename = "../figures/meth_heatmap.png")
+
+# run a pca on meth
+pcaX = prcomp(meth)
+ev = with(pcaX, sdev**2/sum(sdev**2))
+
+png("../figures/meth_pca.png", width = 350, height = 350)
+plot(ev, pch = 19, col = "navy", xlab = "# of PCs",
+     ylab = "Proportion of EV", ylim = c(0, 1.2), cex = 0.3)
+points(cumsum(ev), pch = 19, col = "tomato", cex = 0.3)
+legend("top", pch = 19, col = c("navy", "tomato"),
+       legend = c("EV", "Cumulative EV"), cex = 0.9, horiz = T)
+dev.off()
+
+# Proteins and methylation
+
+omic <- cbind(proteins, meth)
+pheatmap(cor(omic), breaks = seq(-1, 1, length.out = 100),
+         show_rownames = FALSE, show_colnames = FALSE,
+         cluster_rows = FALSE, cluster_cols = FALSE)
+
+dim(proteins)
+dim(meth)
+
+# Counts
+omic_counts <- meth_annot %>% 
+  group_by(alt.name) %>%
+  count() %>%
+  arrange()
+
+head(omic_counts, 50) 

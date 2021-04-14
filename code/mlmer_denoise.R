@@ -20,7 +20,6 @@ source("./omics/utils.R")
 #### Get the data
 
 meth <- readRDS("../data/meth_formatted.rds")
-meth <- meth[,1:24]
 meth_tech <- readRDS("../data/meth_tech_formatted.rds")
 
 # check all row names are equal
@@ -79,20 +78,4 @@ dev.off()
 
 t1=Sys.time()
 print("Post-denoising PCA complete")
-print(t1-t0)
-
-# Methylation Heatmap
-
-print("Heatmap starting...")
-t0=Sys.time()
-
-meth <- readRDS("../data/meth_denoised.rds")
-meth_cor <- apply(meth, 2, FUN=function(X){cor(meth, X)})
-
-pheatmap(meth_cor, breaks = seq(-1, 1, length.out = 100),
-         show_rownames = FALSE, show_colnames = FALSE,
-         filename = "../figures/meth_heatmap.png")
-
-t1=Sys.time()
-print("Heatmap complete")
 print(t1-t0)

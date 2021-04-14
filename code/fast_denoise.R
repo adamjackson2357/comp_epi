@@ -4,7 +4,7 @@ dev.off()
 rm(list=ls())
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-nchunks = 450
+nchunks = 10
 
 suppressPackageStartupMessages({
   library(lme4)
@@ -14,7 +14,6 @@ suppressPackageStartupMessages({
 print("Getting data")
 
 meth <- readRDS("../data/meth_formatted.rds")
-meth <- meth[,1:1000]
 meth_tech <- readRDS("../data/meth_tech_formatted.rds")
 covars <- readRDS("../data/covars_formatted.rds")
 
